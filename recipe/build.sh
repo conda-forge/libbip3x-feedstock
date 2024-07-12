@@ -12,6 +12,7 @@ cd "${SRC_DIR}"/build-release
   # Downloads and install toolbox as a static lib, make sure to remove it
   cmake -S "${SRC_DIR}" -B . \
   -D CMAKE_INSTALL_PREFIX="${pre_install_dir}" \
+  -D CMAKE_BUILD_TYPE=Release \
   -D bip3x_BUILD_SHARED_LIBS=ON \
   -D bip3x_BUILD_JNI_BINDINGS=ON \
   -D bip3x_BUILD_C_BINDINGS=ON \
@@ -36,6 +37,13 @@ cd "${pre_install_dir}"
     rm -rf "${file}"
   done
 cd "${SRC_DIR}"
+
+# Add alternative cmkae files location (bip3x not found by find_package() CMake)
+# mkdir -p "${pre_install_dir}"/lib/cmake/bip3x
+# cp "${pre_install_dir}"/lib/cmake/bip3x-config.cmake "${pre_install_dir}"/lib/cmake/bip3x/bip3xConfig.cmake
+# cp "${pre_install_dir}"/lib/cmake/bip3x-config-version.cmake "${pre_install_dir}"/lib/cmake/bip3x/bip3xConfigVersion.cmake
+# cp "${pre_install_dir}"/lib/cmake/bip3x-targets.cmake "${pre_install_dir}"/lib/cmake/bip3x/bip3xTargets.cmake
+# cp "${pre_install_dir}"/lib/cmake/bip3x-targets-release.cmake "${pre_install_dir}"/lib/cmake/bip3x/bip3xTargets-release.cmake
 
 # Transfer pre-install to PREFIX
 (cd "${pre_install_dir}" && tar cf - ./* | (cd "${PREFIX}" && tar xvf -))
