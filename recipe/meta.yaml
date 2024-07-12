@@ -157,7 +157,7 @@ outputs:
         - if not exist %PREFIX%\\lib\\pkgconfig\\cbip3x.pc exit 1  # [win]
 
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
-        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.3:${PREFIX}/lib/libcbip3x.so.3:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.3:${PREFIX}/lib/libcbip3x.so.3:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
         - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.3.dylib:${PREFIX}/lib/libcbip3x.3.dylib" ./bin/bip3x-test)  # [osx]
         - cd test-release\\bin  # [win]
         - bip3x-test.exe  # [win]
@@ -332,7 +332,7 @@ outputs:
         - if exist %PREFIX%\\bin\\bip3x_jni-{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
-        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.3:${PREFIX}/lib/libcbip3x.so.3:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.3:${PREFIX}/lib/libcbip3x.so.3:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
         - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.3.dylib:${PREFIX}/lib/libcbip3x.3.dylib" ./bin/bip3x-test)  # [osx]
         - cd test-release\\bin  # [win]
         - bip3x-test.exe  # [win]
@@ -431,7 +431,7 @@ outputs:
         - test-release
       commands:
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
-        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.3:${PREFIX}/lib/libcbip3x.so.3:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
+        - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.3:${PREFIX}/lib/libcbip3x.so.3:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
         - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.3.dylib:${PREFIX}/lib/libcbip3x.3.dylib" ./bin/bip3x-test)  # [osx]
         - cd test-release\\bin  # [win]
         - bip3x-test.exe  # [win]
