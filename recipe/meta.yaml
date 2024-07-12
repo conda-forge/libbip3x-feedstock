@@ -74,7 +74,7 @@ outputs:
       - lib\\cmake\\bip3x-config-version.cmake  # [win]
       - lib/cmake/bip3x-targets.cmake  # [unix]
       - lib\\cmake\\bip3x-targets.cmake  # [win]
-      - lib/cmake/bip3x-targets-noconfig.cmake  # [unix]
+      - lib/cmake/bip3x-targets-release.cmake  # [unix]
       - lib\\cmake\\bip3x-targets-release.cmake  # [win]
     requirements:
       build:
@@ -104,7 +104,7 @@ outputs:
         - test -f ${PREFIX}/lib/cmake/{{ cmake }}  # [unix]
         - if not exist %PREFIX%\\lib\\cmake\\{{ cmake }} exit 1  # [win]
         {% endfor %}
-        - test -f ${PREFIX}/lib/cmake/bip3x-targets-noconfig.cmake  # [unix]
+        - test -f ${PREFIX}/lib/cmake/bip3x-targets-release.cmake  # [unix]
         - if not exist %PREFIX%\\lib\\cmake\\bip3x-targets-release.cmake exit 1  # [win]
 
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}  # [unix]
