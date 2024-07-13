@@ -38,20 +38,5 @@ cd "${pre_install_dir}"
   done
 cd "${SRC_DIR}"
 
-# Add alternative cmkae files location (bip3x not found by find_package() CMake)
-# cmake_files_dir="${pre_install_dir}"/lib/cmake/bip3x
-# mkdir -p "${cmake_files_dir}"
-# cp "${pre_install_dir}"/lib/cmake/bip3x-config.cmake          "${cmake_files_dir}"
-# cp "${pre_install_dir}"/lib/cmake/bip3x-config-version.cmake  "${cmake_files_dir}"
-# cp "${pre_install_dir}"/lib/cmake/bip3x-targets.cmake         "${cmake_files_dir}"
-# cp "${pre_install_dir}"/lib/cmake/bip3x-targets-release.cmake "${cmake_files_dir}"
-
-# cmake_files_dir="${pre_install_dir}"/share/cmake/bip3x
-# mkdir -p "${cmake_files_dir}"
-# cp "${pre_install_dir}"/lib/cmake/bip3x-config.cmake          "${cmake_files_dir}"/bip3xConfig.cmake
-# cp "${pre_install_dir}"/lib/cmake/bip3x-config-version.cmake  "${cmake_files_dir}"/bip3xConfigVersion.cmake
-# cp "${pre_install_dir}"/lib/cmake/bip3x-targets.cmake         "${cmake_files_dir}"/bip3xTargets.cmake
-# cp "${pre_install_dir}"/lib/cmake/bip3x-targets-release.cmake "${cmake_files_dir}"/bip3xTargets-release.cmake
-
 # Transfer pre-install to PREFIX
 (cd "${pre_install_dir}" && tar cf - ./* | (cd "${PREFIX}" && tar xvf -))
