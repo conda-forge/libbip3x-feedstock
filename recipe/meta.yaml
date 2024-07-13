@@ -30,9 +30,10 @@ source:
     - patches/0001-add-so-version.patch
     - patches/0002-add-so-version-c.patch
     - patches/0003-add-so-version-jni.patch
+    - patches/0004-change-cmake-files-location.patch
 
 build:
-  number: 3
+  number: 4
 
 requirements:
   build:
