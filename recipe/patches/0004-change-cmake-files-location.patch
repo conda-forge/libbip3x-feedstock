@@ -1,0 +1,7 @@
+--- cmake/package.cmake.old    2024-06-06 14:05:11.000000000 -0500
++++ cmake/package.cmake        2024-06-09 13:26:31.038534947 -0500
+@@ -19,3 +19,3 @@
+ set(INSTALL_LIB_DIR lib)
+-set(INSTALL_CMAKE_DIR ${INSTALL_LIB_DIR}/cmake)
++set(INSTALL_CMAKE_DIR ${INSTALL_LIB_DIR}/cmake/${LIB_NAME_MAIN})
+ set(INSTALL_INCLUDE_DIR include)
