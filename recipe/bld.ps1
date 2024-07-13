@@ -47,6 +47,10 @@ Get-ChildItem -Path (Join-Path $build_dir 'bip3x-test.exe') -Recurse | Where-Obj
 # Converting bip3x.3.lib to bip3x.lib. It will still refer to bip3x.3.dll, but that should be fine.
 Get-ChildItem -Path $pre_install_dir -Recurse -Include 'bip3x.3.lib', 'cbip3x.3.lib', 'bip3x_jni.3.lib' | Rename-Item -NewName { $_.Name -replace '.3.lib', '.lib' }
 
+# Relocate cmake files to bip3x directory
+New-Item -Path $env:PREFIX/lib/cmake/bip3x -ItemType Directory -Force | Out-Null
+Copy-Item -Path $pre_install_dir/lib/cmake/bip3x -Destination $env:PREFIX/lib/cmake/bip3x -Recurse -Force
+
 # Transfer pre-install to PREFIX
 Set-Location $pre_install_dir
     Copy-Item -Path '.\*' -Destination $ENV:PREFIX -Recurse -Force -PassThru | Select-Object -ExpandProperty FullName

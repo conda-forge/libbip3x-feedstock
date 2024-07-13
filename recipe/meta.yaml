@@ -68,14 +68,14 @@ outputs:
       - lib/pkgconfig/bip3x.pc  # [unix]
       - lib\\pkgconfig\\bip3x.pc  # [win]
         
-      - lib/cmake/bip3x-config.cmake  # [unix]
-      - lib\\cmake\\bip3x-config.cmake  # [win]
-      - lib/cmake/bip3x-config-version.cmake  # [unix]
-      - lib\\cmake\\bip3x-config-version.cmake  # [win]
-      - lib/cmake/bip3x-targets.cmake  # [unix]
-      - lib\\cmake\\bip3x-targets.cmake  # [win]
-      - lib/cmake/bip3x-targets-release.cmake  # [unix]
-      - lib\\cmake\\bip3x-targets-release.cmake  # [win]
+      - lib/cmake/bip3x/bip3x-config.cmake  # [unix]
+      - lib\\cmake\\bip3x\\bip3x-config.cmake  # [win]
+      - lib/cmake/bip3x/bip3x-config-version.cmake  # [unix]
+      - lib\\cmake\\bip3x\\bip3x-config-version.cmake  # [win]
+      - lib/cmake/bip3x/bip3x-targets.cmake  # [unix]
+      - lib\\cmake\\bip3x\\bip3x-targets.cmake  # [win]
+      - lib/cmake/bip3x/bip3x-targets-release.cmake  # [unix]
+      - lib\\cmake\\bip3x\\bip3x-targets-release.cmake  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -98,14 +98,12 @@ outputs:
 
         {% set bip3_cmake = [
           "bip3x-config.cmake", "bip3x-config-version.cmake",
-          "bip3x-targets.cmake",
+          "bip3x-targets.cmake", "bip3x-targets-release.cmake"
         ] %}
         {% for cmake in bip3_cmake %}
-        - test -f ${PREFIX}/lib/cmake/{{ cmake }}  # [unix]
-        - if not exist %PREFIX%\\lib\\cmake\\{{ cmake }} exit 1  # [win]
+        - test -f ${PREFIX}/lib/cmake/bip3x/{{ cmake }}  # [unix]
+        - if not exist %PREFIX%\\lib\\cmake\\bip3x\\{{ cmake }} exit 1  # [win]
         {% endfor %}
-        - test -f ${PREFIX}/lib/cmake/bip3x-targets-release.cmake  # [unix]
-        - if not exist %PREFIX%\\lib\\cmake\\bip3x-targets-release.cmake exit 1  # [win]
 
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}  # [unix]
         - if not exist %PREFIX%\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
