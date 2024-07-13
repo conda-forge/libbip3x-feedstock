@@ -48,12 +48,12 @@ Get-ChildItem -Path (Join-Path $build_dir 'bip3x-test.exe') -Recurse | Where-Obj
 Get-ChildItem -Path $pre_install_dir -Recurse -Include 'bip3x.3.lib', 'cbip3x.3.lib', 'bip3x_jni.3.lib' | Rename-Item -NewName { $_.Name -replace '.3.lib', '.lib' }
 
 # Relocate cmake files to bip3x directory
-$cmake_files_dir = Join-Path $env:pre_install_dir "lib\cmake\bip3x"
+$cmake_files_dir = Join-Path $pre_install_dir "lib\cmake\bip3x"
 New-Item -Path $cmake_files_dir -ItemType Directory -Force | Out-Null
-Copy-Item -Path (Join-Path $env:pre_install_dir "lib\cmake\bip3x-config.cmake") -Destination $cmake_files_dir
-Copy-Item -Path (Join-Path $env:pre_install_dir "lib\cmake\bip3x-config-version.cmake") -Destination $cmake_files_dir
-Copy-Item -Path (Join-Path $env:pre_install_dir "lib\cmake\bip3x-targets.cmake") -Destination $cmake_files_dir
-Copy-Item -Path (Join-Path $env:pre_install_dir "lib\cmake\bip3x-targets-release.cmake") -Destination $cmake_files_dir
+Copy-Item -Path (Join-Path $pre_install_dir "lib\cmake\bip3x-config.cmake") -Destination $cmake_files_dir
+Copy-Item -Path (Join-Path $pre_install_dir "lib\cmake\bip3x-config-version.cmake") -Destination $cmake_files_dir
+Copy-Item -Path (Join-Path $pre_install_dir "lib\cmake\bip3x-targets.cmake") -Destination $cmake_files_dir
+Copy-Item -Path (Join-Path $pre_install_dir "lib\cmake\bip3x-targets-release.cmake") -Destination $cmake_files_dir
 
 # Transfer pre-install to PREFIX
 Set-Location $pre_install_dir
