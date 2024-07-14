@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.14)
+project(test-find-packages)
+find_package(bip3x ${PKG_VERSION} REQUIRED)
+message("bip3x_INCLUDE_DIRS: ${bip3x_INCLUDE_DIRS}")
+message("   bip3x_LIBRARIES: ${bip3x_LIBRARIES}")
+message("     bip3x_VERSION: ${bip3x_VERSION}")
+message("       bip3x_FOUND: ${bip3x_FOUND}")
