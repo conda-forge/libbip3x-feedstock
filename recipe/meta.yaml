@@ -51,6 +51,8 @@ outputs:
     build:
       run_exports:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version) }}
+      ignore_run_exports:
+        - {{ pin_subpackage('libbip3x-' ~ so_major_version) }}  # [win]
     files:
       # Core Headers
       {% for path, headers in bip3x_header_paths.items() %}
