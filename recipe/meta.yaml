@@ -50,9 +50,9 @@ outputs:
   - name: libbip3x
     build:
       run_exports:
-        - {{ pin_subpackage('libbip3x-' ~ so_major_version), exact=True) }}
-        # - {{ pin_subpackage('libcbip3x-' ~ so_major_version, exact=True)) }}
-        # - {{ pin_subpackage('libbip3x_jni-' ~ so_major_version), exact=True) }}
+        - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
+        - {{ pin_subpackage('libcbip3x-' ~ so_major_version, exact=True) }}
+        - {{ pin_subpackage('libbip3x_jni-' ~ so_major_version, exact=True) }}
     files:
       # Core Headers
       {% for path, headers in bip3x_header_paths.items() %}
