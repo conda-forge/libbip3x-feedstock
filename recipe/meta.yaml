@@ -151,6 +151,7 @@ outputs:
         # Configuration files
         - test -f ${PREFIX}/lib/pkgconfig/bip3x.pc  # [unix]
         - if not exist %PREFIX%\\lib\\pkgconfig\\bip3x.pc exit 1  # [win]
+        - set "PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig"  # [win]
         - pkg-config --cflags --libs bip3x
 
         {% set bip3_cmake = [
