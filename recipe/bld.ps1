@@ -12,10 +12,7 @@ Set-Location $build_dir
     cmake $env:CMAKE_ARGS `
       -G "Ninja" `
       -D CMAKE_BUILD_TYPE=Release `
-      -D CMAKE_INSTALL_PREFIX="$env:PREFIX" `
-      -D CMAKE_INSTALL_LIBDIR="$env:PREFIX/Library/lib" `
-      -D CMAKE_INSTALL_BINDIR="$env:PREFIX/Library/bin" `
-      -D CMAKE_INSTALL_INCLUDEDIR="$env:PREFIX/Library/include" `
+      -D CMAKE_INSTALL_PREFIX="$env:LIBRARY_PREFIX" `
       -D CMAKE_VERBOSE_MAKEFILE=ON `
       -D bip3x_BUILD_SHARED_LIBS=ON `
       -D bip3x_BUILD_JNI_BINDINGS=ON `
