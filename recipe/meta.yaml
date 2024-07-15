@@ -59,42 +59,42 @@ outputs:
       {% for path, headers in bip3x_header_paths.items() %}
         {% for header in headers %}
       - include/{{ path }}/{{ header }}  # [unix]
-      - include\\{{ path | replace('/', '\\\\') }}\\{{ header }}  # [win]
+      - Library\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }}  # [win]
         {% endfor %}
       {% endfor %}
       {% for header in cbip3x_h %}
       - include/cbip3x/{{ header }}  # [unix]
-      - include\\cbip3x\\{{ header }}  # [win]
+      - Library\\include\\cbip3x\\{{ header }}  # [win]
       {% endfor %}
 
       # Libraries
       - lib/libbip3x.so  # [linux]
       - lib/libbip3x.dylib  # [osx]
-      - lib\\bip3x.lib  # [win]
-      - bin\\bip3x.dll  # [win]
+      - Library\\lib\\bip3x.lib  # [win]
+      - Library\\bin\\bip3x.dll  # [win]
 
       - lib/libcbip3x.so  # [linux]
       - lib/libcbip3x.dylib  # [osx]
-      - lib\\cbip3x.lib  # [win]
-      - bin\\cbip3x.dll  # [win]
+      - Library\\lib\\cbip3x.lib  # [win]
+      - Library\\bin\\cbip3x.dll  # [win]
 
       - lib/libbip3x_jni.so  # [linux]
       - lib/libbip3x_jni.dylib  # [osx]
-      - lib\\bip3x_jni.lib  # [win]
-      - bin\\bip3x_jni.dll  # [win]
+      - Library\\lib\\bip3x_jni.lib  # [win]
+      - Library\\bin\\bip3x_jni.dll  # [win]
 
       # Configuration files
       - lib/pkgconfig/bip3x.pc  # [unix]
-      - lib\\pkgconfig\\bip3x.pc  # [win]
+      - Library\\lib\\pkgconfig\\bip3x.pc  # [win]
 
       - lib/cmake/bip3x/bip3x-config.cmake  # [unix]
-      - lib\\cmake\\bip3x\\bip3x-config.cmake  # [win]
+      - Library\\lib\\cmake\\bip3x\\bip3x-config.cmake  # [win]
       - lib/cmake/bip3x/bip3x-config-version.cmake  # [unix]
-      - lib\\cmake\\bip3x\\bip3x-config-version.cmake  # [win]
+      - Library\\lib\\cmake\\bip3x\\bip3x-config-version.cmake  # [win]
       - lib/cmake/bip3x/bip3x-targets.cmake  # [unix]
-      - lib\\cmake\\bip3x\\bip3x-targets.cmake  # [win]
+      - Library\\lib\\cmake\\bip3x\\bip3x-targets.cmake  # [win]
       - lib/cmake/bip3x/bip3x-targets-release.cmake  # [unix]
-      - lib\\cmake\\bip3x\\bip3x-targets-release.cmake  # [win]
+      - Library\\lib\\cmake\\bip3x\\bip3x-targets-release.cmake  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -181,10 +181,10 @@ outputs:
     files:
       - lib/libbip3x.so.{{ so_major_version }}  # [linux]
       - lib/libbip3x.{{ so_major_version }}.dylib  # [osx]
-      - bin\\bip3x.{{ so_major_version }}.dll  # [win]
+      - Library\\bin\\bip3x.{{ so_major_version }}.dll  # [win]
       - lib/libbip3x.so.{{ version }}  # [linux]
       - lib/libbip3x.{{ version }}.dylib  # [osx]
-      - bin\\bip3x.{{ version }}.dll  # [win]
+      - Library\\bin\\bip3x.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -249,10 +249,10 @@ outputs:
     files:
       - lib/libcbip3x.so.{{ so_major_version }}  # [linux]
       - lib/libcbip3x.{{ so_major_version }}.dylib  # [osx]
-      - bin\\cbip3x.{{ so_major_version }}.dll  # [win]
+      - Library\\bin\\cbip3x.{{ so_major_version }}.dll  # [win]
       - lib/libcbip3x.so.{{ version }}  # [linux]
       - lib/libcbip3x.{{ version }}.dylib  # [osx]
-      - bin\\cbip3x.{{ version }}.dll  # [win]
+      - Library\\bin\\cbip3x.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -323,10 +323,10 @@ outputs:
     files:
       - lib/libbip3x_jni.so.{{ so_major_version }}  # [linux]
       - lib/libbip3x_jni.{{ so_major_version }}.dylib  # [osx]
-      - bin\\bip3x_jni.{{ so_major_version }}.dll  # [win]
+      - Library\\bin\\bip3x_jni.{{ so_major_version }}.dll  # [win]
       - lib/libbip3x_jni.so.{{ version }}  # [linux]
       - lib/libbip3x_jni.{{ version }}.dylib  # [osx]
-      - bin\\bip3x_jni.{{ version }}.dll  # [win]
+      - Library\\bin\\bip3x_jni.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
