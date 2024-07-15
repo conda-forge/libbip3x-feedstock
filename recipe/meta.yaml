@@ -43,6 +43,7 @@ requirements:
     - cmake
     - ninja
   host:
+    # - libtoolbox >=3.4.0
     - openjdk
     - openssl
 
@@ -105,10 +106,10 @@ outputs:
         - {{ pin_subpackage('libcbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libbip3x_jni-' ~ so_major_version, exact=True) }}
       run:
-        # - libtoolbox >=3.4.0
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libcbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libbip3x_jni-' ~ so_major_version, exact=True) }}
+        # - libtoolbox >=3.4.0
     test:
       files:
         - tests/
@@ -125,33 +126,33 @@ outputs:
         {% for path, headers in bip3x_header_paths.items() %}
           {% for header in headers %}
         - test -f ${PREFIX}/include/{{ path }}/{{ header }}  # [unix]
-        - if not exist %PREFIX%\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
           {% endfor %}
         {% endfor %}
 
         # C-binding headers
         {% for header in cbip3x_h %}
         - test -f ${PREFIX}/include/cbip3x/{{ header }}  # [unix]
-        - if not exist %PREFIX%\\include\\cbip3x\\{{ header }} exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\include\\cbip3x\\{{ header }} exit 1  # [win]
         {% endfor %}
 
         # Libraries
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}  # [unix]
-        - if not exist %PREFIX%\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
-        - if not exist %PREFIX%\\lib\\bip3x.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\bip3x.lib exit 1  # [win]
 
         - test -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}  # [unix]
-        - if not exist %PREFIX%\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
-        - if not exist %PREFIX%\\lib\\cbip3x.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\cbip3x.lib exit 1  # [win]
 
         - test -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [unix]
-        - if not exist %PREFIX%\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
-        - if not exist %PREFIX%\\lib\\bip3x_jni.lib exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\bip3x_jni.lib exit 1  # [win]
 
         # Configuration files
         - test -f ${PREFIX}/lib/pkgconfig/bip3x.pc  # [unix]
-        - if not exist %PREFIX%\\lib\\pkgconfig\\bip3x.pc exit 1  # [win]
-        - set "PKG_CONFIG_PATH=%PREFIX%\\lib\\pkgconfig"  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\pkgconfig\\bip3x.pc exit 1  # [win]
+        - set "PKG_CONFIG_PATH=%PREFIX%\\Library\\lib\\pkgconfig"  # [win]
         - pkg-config --cflags --libs bip3x
 
         {% set bip3_cmake = [
@@ -160,7 +161,7 @@ outputs:
         ] %}
         {% for cmake in bip3_cmake %}
         - test -f ${PREFIX}/lib/cmake/bip3x/{{ cmake }}  # [unix]
-        - if not exist %PREFIX%\\lib\\cmake\\bip3x\\{{ cmake }} exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\lib\\cmake\\bip3x\\{{ cmake }} exit 1  # [win]
         {% endfor %}
         # This currently fails due to missing toolbox dependency (specifically removed)
         # - cd tests && cmake . -G Ninja && cd ..
@@ -189,55 +190,57 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ stdlib("c") }}
+      run:
+        # - libtoolbox >=3.4.0
     test:
       commands:
         # No headers (verify no potential overlap)
         {% for path, headers in bip3x_header_paths.items() %}
           {% for header in headers %}
         - test ! -f ${PREFIX}/include/{{ path }}/{{ header }}  # [unix]
-        - if exist %PREFIX%\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
+        - if exist %PREFIX%\\Library\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
           {% endfor %}
         {% endfor %}
         {% for header in cbip3x_h %}
         - test ! -f ${PREFIX}/include/cbip3x/{{ header }}  # [unix]
-        - if exist %PREFIX%\\include\\cbip3x\\{{ header }} exit 1  # [win]
+        - if exist %PREFIX%\\Library\\include\\cbip3x\\{{ header }} exit 1  # [win]
         {% endfor %}
 
         # Versioned bip3x library
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\bin\\bip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\bin\\bip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned cbip3x library
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned JNI library
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No non-versioned library
         - test ! -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}  # [unix]
-        - if exist %PREFIX%\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\bip3x.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\bip3x.lib exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}  # [unix]
-        - if exist %PREFIX%\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\cbip3x.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\cbip3x.lib exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\bip3x_jni.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\bip3x_jni.lib exit 1  # [win]
 
   - name: libcbip3x-{{ so_major_version }}
     build:
@@ -259,6 +262,7 @@ outputs:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
       run:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
+        # - libtoolbox >=3.4.0
     test:
       source_files:
         - test-release
@@ -270,41 +274,41 @@ outputs:
         {% for path, headers in bip3x_header_paths.items() %}
           {% for header in headers %}
         - test ! -f ${PREFIX}/include/{{ path }}/{{ header }}  # [unix]
-        - if exist %PREFIX%\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
+        - if exist %PREFIX%\\Library\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
           {% endfor %}
         {% endfor %}
         {% for header in cbip3x_h %}
         - test ! -f ${PREFIX}/include/cbip3x/{{ header }}  # [unix]
-        - if exist %PREFIX%\\include\\cbip3x\\{{ header }} exit 1  # [win]
+        - if exist %PREFIX%\\Library\\include\\cbip3x\\{{ header }} exit 1  # [win]
         {% endfor %}
 
         # Versioned cbip3x library
         - test -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libcbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libcbip3x.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned JNI library
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No non-versioned library
         - test ! -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}  # [unix]
-        - if exist %PREFIX%\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\bip3x.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\bip3x.lib exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}  # [unix]
-        - if exist %PREFIX%\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\cbip3x.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\cbip3x.lib exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\bip3x_jni.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\bip3x_jni.lib exit 1  # [win]
 
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libcbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
@@ -332,47 +336,49 @@ outputs:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
       run:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
+        # - libtoolbox >=3.4.0
+        - openjdk
     test:
       commands:
         # No headers (verify no potential overlap)
         {% for path, headers in bip3x_header_paths.items() %}
           {% for header in headers %}
         - test ! -f ${PREFIX}/include/{{ path }}/{{ header }}  # [unix]
-        - if exist %PREFIX%\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
+        - if exist %PREFIX%\\Library\\include\\{{ path | replace('/', '\\\\') }}\\{{ header }} exit 1  # [win]
           {% endfor %}
         {% endfor %}
         {% for header in cbip3x_h %}
         - test ! -f ${PREFIX}/include/cbip3x/{{ header }}  # [unix]
-        - if exist %PREFIX%\\include\\cbip3x\\{{ header }} exit 1  # [win]
+        - if exist %PREFIX%\\Library\\include\\cbip3x\\{{ header }} exit 1  # [win]
         {% endfor %}
 
         # Versioned JNI library
         - test -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x_jni.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x_jni.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned cbip3x library
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No non-versioned library
         - test ! -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}  # [unix]
-        - if exist %PREFIX%\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\bip3x.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\bip3x.lib exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}  # [unix]
-        - if exist %PREFIX%\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\cbip3x.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\cbip3x.lib exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
-        - if exist %PREFIX%\\lib\\bip3x_jni.lib exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\lib\\bip3x_jni.lib exit 1  # [win]
 
   # Naming conversion (upstream github repo is called bip3x)
   - name: bip3x
@@ -386,6 +392,7 @@ outputs:
         - {{ pin_subpackage('libbip3x', exact=True) }}
       run:
         - {{ pin_subpackage('libbip3x', exact=True) }}
+        # - libtoolbox >=3.4.0
     test:
       source_files:
         - test-release

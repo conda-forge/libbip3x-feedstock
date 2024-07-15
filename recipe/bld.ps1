@@ -13,6 +13,9 @@ Set-Location $build_dir
       -G "Ninja" `
       -D CMAKE_BUILD_TYPE=Release `
       -D CMAKE_INSTALL_PREFIX="$env:PREFIX" `
+      -D CMAKE_INSTALL_LIBDIR="$env:PREFIX/Library/lib" `
+      -D CMAKE_INSTALL_BINDIR="$env:PREFIX/Library/bin" `
+      -D CMAKE_INSTALL_INCLUDEDIR="$env:PREFIX/Library/include" `
       -D CMAKE_VERBOSE_MAKEFILE=ON `
       -D bip3x_BUILD_SHARED_LIBS=ON `
       -D bip3x_BUILD_JNI_BINDINGS=ON `
@@ -43,7 +46,7 @@ Get-ChildItem -Path (Join-Path $build_dir 'bip3x-test.exe') -Recurse | Where-Obj
 
 # CMake was patched to create versioned windows DLLs, but the side-effect is that it creates bip3x.3.lib as well
 # Converting bip3x.3.lib to bip3x.lib. It will still refer to bip3x.3.dll, but that should be fine.
-Get-ChildItem -Path $env:PREFIX -Recurse -Include 'bip3x.3.lib', 'cbip3x.3.lib', 'bip3x_jni.3.lib' | Rename-Item -NewName { $_.Name -replace '.3.lib', '.lib' }
+Get-ChildItem -Path $env:PREFIX -Recurse -Filter "*.lib" | Where-Object { $_.Name -match "\.\d+\.lib$" } | Rename-Item -NewName { $_.Name -replace "\.\d+(\.lib)$", '$1' }
 
 # Clean up
 Remove-Item -Path $build_dir -Recurse -Force
