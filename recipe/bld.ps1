@@ -41,9 +41,15 @@ Get-ChildItem -Path $env:PREFIX -Recurse | Where-Object { $_.FullName -match 'GT
 # Test binary is not installed on windows, apparently
 Get-ChildItem -Path (Join-Path $build_dir 'bip3x-test.exe') -Recurse | Where-Object { $_ -ne $null } | ForEach-Object { Copy-Item -Path $_.FullName -Destination (Join-Path $test_release_dir 'bin') -Recurse }
 
-# CMake was patched to create versioned windows DLLs, but the side-effect is that it creates bip3x.3.lib as well
-# Converting bip3x.3.lib to bip3x.lib. It will still refer to bip3x.3.dll, but that should be fine.
-Get-ChildItem -Path $env:PREFIX -Recurse -Filter "*.lib" | Where-Object { $_.Name -match "\.\d+\.lib$" } | Rename-Item -NewName { $_.Name -replace "\.\d+(\.lib)$", '$1' }
+# CMake was patched to create versioned windows DLLs, but the side-effect is that it creates
+# bip3x.3.lib as the primary library. let's also provide the .lib without the version number.
+Get-ChildItem -Path $env:PREFIX -Recurse -Filter "*.lib" |
+    Where-Object { $_.Name -match "\.\d+\.lib$" } |
+    ForEach-Object {
+        $newName = $_.Name -replace "\.\d+(\.lib)$", '$1'
+        $newPath = Join-Path $_.Directory $newName
+        Copy-Item -Path $_.FullName -Destination $newPath
+    }
 
 # Clean up
 Remove-Item -Path $build_dir -Recurse -Force
