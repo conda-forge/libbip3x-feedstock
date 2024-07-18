@@ -164,9 +164,9 @@ outputs:
         - if not exist %PREFIX%\\Library\\lib\\cmake\\bip3x\\{{ cmake }} exit 1  # [win]
         {% endfor %}
         # This currently fails due to missing toolbox dependency (specifically removed)
-        # - cd tests && cmake . -G Ninja && cd ..
-        # - if [ $? -ne 0 ]; then exit 1; fi  # [unix]
-        # - if %ERRORLEVEL% NEQ 0 exit 1  # [win]
+        #- cd tests && cmake . -G Ninja && cd ..
+        #- if [ $? -ne 0 ]; then exit 1; fi  # [unix]
+        #- if %ERRORLEVEL% NEQ 0 exit 1  # [win]
 
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libcbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
