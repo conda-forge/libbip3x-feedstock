@@ -52,7 +52,7 @@ Get-ChildItem -Path $env:PREFIX -Recurse -Filter "*.lib" |
     }
 
 # CMake files installed in the wrong directory
-Copy-Item -Path (Join-Path $env:PREFIX 'Library/lib/cmake/bip3x') -Destination (Join-Path $env:PREFIX 'bip3x/cmake')
+Copy-Item -Path (Join-Path $env:PREFIX 'Library/lib/cmake/bip3x/*') -Destination (Join-Path $env:PREFIX 'bip3x/cmake') -Recurse
 
 # Clean up
 Remove-Item -Path $build_dir -Recurse -Force
