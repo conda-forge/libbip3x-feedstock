@@ -93,8 +93,8 @@ outputs:
       ] %}
       {% for cmake in bip3_cmake %}
       - lib/cmake/bip3x/{{ cmake }}  # [unix]
-      - Library\\lib\\cmake\\bip3x\\{{ cmake }} exit 1  # [win]
-      - bip3x\\cmake\\{{ cmake }} exit 1  # [win]
+      - Library\\lib\\cmake\\bip3x\\{{ cmake }}  # [win]
+      - bip3x\\cmake\\{{ cmake }}  # [win]
       {% endfor %}
     requirements:
       build:
