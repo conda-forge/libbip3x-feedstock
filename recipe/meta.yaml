@@ -87,14 +87,15 @@ outputs:
       - lib/pkgconfig/bip3x.pc  # [unix]
       - Library\\lib\\pkgconfig\\bip3x.pc  # [win]
 
-      - lib/cmake/bip3x/bip3x-config.cmake  # [unix]
-      - Library\\lib\\cmake\\bip3x\\bip3x-config.cmake  # [win]
-      - lib/cmake/bip3x/bip3x-config-version.cmake  # [unix]
-      - Library\\lib\\cmake\\bip3x\\bip3x-config-version.cmake  # [win]
-      - lib/cmake/bip3x/bip3x-targets.cmake  # [unix]
-      - Library\\lib\\cmake\\bip3x\\bip3x-targets.cmake  # [win]
-      - lib/cmake/bip3x/bip3x-targets-release.cmake  # [unix]
-      - Library\\lib\\cmake\\bip3x\\bip3x-targets-release.cmake  # [win]
+      {% set bip3_cmake = [
+        "bip3x-config.cmake", "bip3x-config-version.cmake",
+        "bip3x-targets.cmake", "bip3x-targets-release.cmake"
+      ] %}
+      {% for cmake in bip3_cmake %}
+      - lib/cmake/bip3x/{{ cmake }}  # [unix]
+      - Library\\lib\\cmake\\bip3x\\{{ cmake }} exit 1  # [win]
+      - bip3x\\cmake\\{{ cmake }} exit 1  # [win]
+      {% endfor %}
     requirements:
       build:
         - {{ compiler('c') }}
