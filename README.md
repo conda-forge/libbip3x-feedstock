@@ -85,13 +85,9 @@ Current release info
 | Name | Downloads | Version | Platforms |
 | --- | --- | --- | --- |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-bip3x-green.svg)](https://anaconda.org/conda-forge/bip3x) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/bip3x.svg)](https://anaconda.org/conda-forge/bip3x) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/bip3x.svg)](https://anaconda.org/conda-forge/bip3x) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/bip3x.svg)](https://anaconda.org/conda-forge/bip3x) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-bip3x_jni-green.svg)](https://anaconda.org/conda-forge/bip3x_jni) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/bip3x_jni.svg)](https://anaconda.org/conda-forge/bip3x_jni) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/bip3x_jni.svg)](https://anaconda.org/conda-forge/bip3x_jni) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/bip3x_jni.svg)](https://anaconda.org/conda-forge/bip3x_jni) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-cbip3x-green.svg)](https://anaconda.org/conda-forge/cbip3x) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/cbip3x.svg)](https://anaconda.org/conda-forge/cbip3x) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/cbip3x.svg)](https://anaconda.org/conda-forge/cbip3x) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/cbip3x.svg)](https://anaconda.org/conda-forge/cbip3x) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libbip3x-green.svg)](https://anaconda.org/conda-forge/libbip3x) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libbip3x.svg)](https://anaconda.org/conda-forge/libbip3x) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libbip3x.svg)](https://anaconda.org/conda-forge/libbip3x) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libbip3x.svg)](https://anaconda.org/conda-forge/libbip3x) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libbip3x--3-green.svg)](https://anaconda.org/conda-forge/libbip3x-3) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libbip3x-3.svg)](https://anaconda.org/conda-forge/libbip3x-3) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libbip3x-3.svg)](https://anaconda.org/conda-forge/libbip3x-3) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libbip3x-3.svg)](https://anaconda.org/conda-forge/libbip3x-3) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-libbip3x_jni-green.svg)](https://anaconda.org/conda-forge/libbip3x_jni) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libbip3x_jni.svg)](https://anaconda.org/conda-forge/libbip3x_jni) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libbip3x_jni.svg)](https://anaconda.org/conda-forge/libbip3x_jni) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libbip3x_jni.svg)](https://anaconda.org/conda-forge/libbip3x_jni) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libbip3x_jni--3-green.svg)](https://anaconda.org/conda-forge/libbip3x_jni-3) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libbip3x_jni-3.svg)](https://anaconda.org/conda-forge/libbip3x_jni-3) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libbip3x_jni-3.svg)](https://anaconda.org/conda-forge/libbip3x_jni-3) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libbip3x_jni-3.svg)](https://anaconda.org/conda-forge/libbip3x_jni-3) |
-| [![Conda Recipe](https://img.shields.io/badge/recipe-libcbip3x-green.svg)](https://anaconda.org/conda-forge/libcbip3x) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libcbip3x.svg)](https://anaconda.org/conda-forge/libcbip3x) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libcbip3x.svg)](https://anaconda.org/conda-forge/libcbip3x) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libcbip3x.svg)](https://anaconda.org/conda-forge/libcbip3x) |
 | [![Conda Recipe](https://img.shields.io/badge/recipe-libcbip3x--3-green.svg)](https://anaconda.org/conda-forge/libcbip3x-3) | [![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/libcbip3x-3.svg)](https://anaconda.org/conda-forge/libcbip3x-3) | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/libcbip3x-3.svg)](https://anaconda.org/conda-forge/libcbip3x-3) | [![Conda Platforms](https://img.shields.io/conda/pn/conda-forge/libcbip3x-3.svg)](https://anaconda.org/conda-forge/libcbip3x-3) |
 
 Installing libbip3x
@@ -104,16 +100,16 @@ conda config --add channels conda-forge
 conda config --set channel_priority strict
 ```
 
-Once the `conda-forge` channel has been enabled, `bip3x, bip3x_jni, cbip3x, libbip3x, libbip3x-3, libbip3x_jni, libbip3x_jni-3, libcbip3x, libcbip3x-3` can be installed with `conda`:
+Once the `conda-forge` channel has been enabled, `bip3x, libbip3x, libbip3x-3, libbip3x_jni-3, libcbip3x-3` can be installed with `conda`:
 
 ```
-conda install bip3x bip3x_jni cbip3x libbip3x libbip3x-3 libbip3x_jni libbip3x_jni-3 libcbip3x libcbip3x-3
+conda install bip3x libbip3x libbip3x-3 libbip3x_jni-3 libcbip3x-3
 ```
 
 or with `mamba`:
 
 ```
-mamba install bip3x bip3x_jni cbip3x libbip3x libbip3x-3 libbip3x_jni libbip3x_jni-3 libcbip3x libcbip3x-3
+mamba install bip3x libbip3x libbip3x-3 libbip3x_jni-3 libcbip3x-3
 ```
 
 It is possible to list all of the versions of `bip3x` available on your platform with `conda`:
