@@ -11,7 +11,7 @@
 +           COMMAND ${CMAKE_COMMAND} -E copy_if_different
 +                   "${MAJOR_DLL_PATH}.dll"
 +                   "${CMAKE_CURRENT_BINARY_DIR}/${LIB_NAME_MAIN}.dll"
-+           COMMENT "Copying ${LIB_NAME_C}.${PROJECT_VERSION_MAJOR}.dll to versioned filenames"
++           COMMENT "Copying ${LIB_NAME_C}-${PROJECT_VERSION_MAJOR}.dll to versioned filenames"
 +         )
 +         add_custom_target(CopyVersionedDLL ALL
 +           DEPENDS ${LIB_NAME_MAIN}
