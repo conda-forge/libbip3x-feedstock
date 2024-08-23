@@ -44,7 +44,8 @@ requirements:
     - {{ stdlib('c') }}
     - cmake
     - ninja
-    - patch
+    - patch  # [unix]
+    - m2-patch  # [win]
   host:
     - libtoolbox ==3.4.0
     - openjdk
