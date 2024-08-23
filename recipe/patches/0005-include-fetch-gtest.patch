@@ -1,0 +1,4 @@
+--- cmake/target_test.cmake.orig
++++ cmake/target_test.cmake
+@@ -4,0 +4,1 @@
++    include(FetchContent)

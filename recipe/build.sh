@@ -2,6 +2,9 @@
 
 set -ex
 
+# There's a TAB in CMakeLists.txt that fails conda patches mechanism
+patch -p0 --ignore-whitespace < "${RECIPE_DIR}"/patches/xxxx-find-toolbox-package.patch
+
 build_dir="${SRC_DIR}"/build-release
 test_release_dir="${SRC_DIR}"/test-release
 

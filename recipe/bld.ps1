@@ -5,6 +5,9 @@ $test_release_dir = Join-Path $env:SRC_DIR "test-release"
 # Update PATH
 $env:PATH = "$env:PREFIX\bin;" + $env:PATH
 
+# There's a TAB in CMakeLists.txt that fails conda patches mechanism
+Invoke-Expression "patch -p0 --ignore-whitespace < ${env:RECIPE_DIR}/patches/xxxx-cmake-protocol-lib.patch"
+
 # Build and install
 New-Item -Path $build_dir -ItemType Directory -Force
 
@@ -44,9 +47,9 @@ Get-ChildItem -Path (Join-Path $build_dir 'bip3x-test.exe') -Recurse | Where-Obj
 # CMake was patched to create versioned windows DLLs, but the side-effect is that it creates
 # bip3x.3.lib as the primary library. let's also provide the .lib without the version number.
 Get-ChildItem -Path $env:PREFIX -Recurse -Filter "*.lib" |
-    Where-Object { $_.Name -match "\.\d+\.lib$" } |
+    Where-Object { $_.Name -match "-\d+\.lib$" } |
     ForEach-Object {
-        $newName = $_.Name -replace "\.\d+(\.lib)$", '$1'
+        $newName = $_.Name -replace "-\d+(\.lib)$", '$1'
         $newPath = Join-Path $_.Directory $newName
         Copy-Item -Path $_.FullName -Destination $newPath
     }

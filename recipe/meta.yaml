@@ -31,7 +31,8 @@ source:
     - patches/0002-add-so-version-c.patch
     - patches/0003-add-so-version-jni.patch
     - patches/0004-change-cmake-files-location.patch
-    - patches/0005-find-toolbox-package.patch
+    - patches/0005-include-fetch-gtest.patch
+    - patches/0006-remove-toolbox-install.patch
 
 build:
   number: 6
@@ -43,8 +44,9 @@ requirements:
     - {{ stdlib('c') }}
     - cmake
     - ninja
+    - patch
   host:
-    # - libtoolbox >=3.4.0
+    - libtoolbox ==3.4.0
     - openjdk
     - openssl
 
@@ -103,7 +105,7 @@ outputs:
         - {{ compiler('cxx') }}
         - {{ stdlib('c') }}
       host:
-        # - libtoolbox >=3.4.0
+        - libtoolbox ==3.4.0
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libcbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libbip3x_jni-' ~ so_major_version, exact=True) }}
@@ -111,7 +113,7 @@ outputs:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libcbip3x-' ~ so_major_version, exact=True) }}
         - {{ pin_subpackage('libbip3x_jni-' ~ so_major_version, exact=True) }}
-        # - libtoolbox >=3.4.0
+        - libtoolbox ==3.4.0
     test:
       files:
         - tests/
@@ -173,7 +175,7 @@ outputs:
 
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libcbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
-        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.3.dylib:${PREFIX}/lib/libcbip3x.3.dylib" ./bin/bip3x-test)  # [osx]
+        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.{{ so_major_version }}.dylib:${PREFIX}/lib/libcbip3x.{{ so_major_version }}.dylib" ./bin/bip3x-test)  # [osx]
         - cd test-release\\bin  # [win]
         - bip3x-test.exe  # [win]
 
@@ -187,14 +189,13 @@ outputs:
       - Library\\bin\\bip3x.{{ so_major_version }}.dll  # [win]
       - lib/libbip3x.so.{{ version }}  # [linux]
       - lib/libbip3x.{{ version }}.dylib  # [osx]
-      - Library\\bin\\bip3x.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ stdlib("c") }}
       run:
-        # - libtoolbox >=3.4.0
+        - libtoolbox ==3.4.0
     test:
       commands:
         # No headers (verify no potential overlap)
@@ -212,15 +213,14 @@ outputs:
         # Versioned bip3x library
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\bip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\bip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned cbip3x library
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ version }}${SHLIB_EXT}  # [osx]
         - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
@@ -228,7 +228,7 @@ outputs:
         # No Versioned JNI library
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ version }}${SHLIB_EXT}  # [osx]
         - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
@@ -255,7 +255,6 @@ outputs:
       - Library\\bin\\cbip3x.{{ so_major_version }}.dll  # [win]
       - lib/libcbip3x.so.{{ version }}  # [linux]
       - lib/libcbip3x.{{ version }}.dylib  # [osx]
-      - Library\\bin\\cbip3x.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -265,7 +264,7 @@ outputs:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
       run:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
-        # - libtoolbox >=3.4.0
+        # - libtoolbox ==3.4.0
     test:
       source_files:
         - test-release
@@ -288,15 +287,14 @@ outputs:
         # Versioned cbip3x library
         - test -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libcbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\cbip3x-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libcbip3x.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned JNI library
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\bip3x_jni-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libbip3x_jni.{{ version }}${SHLIB_EXT}  # [osx]
         - if exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
@@ -315,7 +313,7 @@ outputs:
 
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libcbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
-        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.3.dylib:${PREFIX}/lib/libcbip3x.3.dylib" ./bin/bip3x-test)  # [osx]
+        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.{{ so_major_version }}.dylib:${PREFIX}/lib/libcbip3x.{{ so_major_version }}.dylib" ./bin/bip3x-test)  # [osx]
         - cd test-release\\bin  # [win]
         - bip3x-test.exe  # [win]
 
@@ -329,7 +327,6 @@ outputs:
       - Library\\bin\\bip3x_jni.{{ so_major_version }}.dll  # [win]
       - lib/libbip3x_jni.so.{{ version }}  # [linux]
       - lib/libbip3x_jni.{{ version }}.dylib  # [osx]
-      - Library\\bin\\bip3x_jni.{{ version }}.dll  # [win]
     requirements:
       build:
         - {{ compiler('c') }}
@@ -339,7 +336,7 @@ outputs:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
       run:
         - {{ pin_subpackage('libbip3x-' ~ so_major_version, exact=True) }}
-        # - libtoolbox >=3.4.0
+        # - libtoolbox ==3.4.0
         - openjdk
     test:
       commands:
@@ -358,15 +355,14 @@ outputs:
         # Versioned JNI library
         - test -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x_jni.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if not exist %PREFIX%\\Library\\bin\\bip3x_jni-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test -f ${PREFIX}/lib/libbip3x_jni${SHLIB_EXT}.{{ version }}  # [linux]
         - test -f ${PREFIX}/lib/libbip3x_jni.{{ version }}${SHLIB_EXT}  # [osx]
-        - if not exist %PREFIX%\\Library\\bin\\bip3x_jni.{{ version }}%SHLIB_EXT% exit 1  # [win]
 
         # No Versioned cbip3x library
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ so_major_version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ so_major_version }}${SHLIB_EXT}  # [osx]
-        - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
+        - if exist %PREFIX%\\Library\\bin\\cbip3x-{{ so_major_version }}%SHLIB_EXT% exit 1  # [win]
         - test ! -f ${PREFIX}/lib/libcbip3x${SHLIB_EXT}.{{ version }}  # [linux]
         - test ! -f ${PREFIX}/lib/libcbip3x.{{ version }}${SHLIB_EXT}  # [osx]
         - if exist %PREFIX%\\Library\\bin\\cbip3x.{{ version }}%SHLIB_EXT% exit 1  # [win]
@@ -395,7 +391,7 @@ outputs:
         - {{ pin_subpackage('libbip3x', exact=True) }}
       run:
         - {{ pin_subpackage('libbip3x', exact=True) }}
-        # - libtoolbox >=3.4.0
+        # - libtoolbox ==3.4.0
     test:
       source_files:
         - test-release
@@ -405,7 +401,7 @@ outputs:
       commands:
         # Key testing phase: This test needs both libbbip3x.so.3 and libcbip3x.so.3
         - (cd test-release && LD_PRELOAD="${PREFIX}/lib/libbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libcbip3x.so.{{ so_major_version }}:${PREFIX}/lib/libgcc_s.so.1:${PREFIX}/lib/libstdc++.so.6" ./bin/bip3x-test)  # [linux]
-        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.3.dylib:${PREFIX}/lib/libcbip3x.3.dylib" ./bin/bip3x-test)  # [osx]
+        - (cd test-release && DYLD_INSERT_LIBRARIES="${PREFIX}/lib/libbip3x.{{ so_major_version }}.dylib:${PREFIX}/lib/libcbip3x.{{ so_major_version }}.dylib" ./bin/bip3x-test)  # [osx]
         - cd test-release\\bin  # [win]
         - bip3x-test.exe  # [win]
 

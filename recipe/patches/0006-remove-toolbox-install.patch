@@ -1,0 +1,9 @@
+--- cmake/package.cmake.orig   2024-06-06 14:05:11.000000000 -0500
++++ cmake/package.cmake        2024-06-09 13:26:31.038534947 -0500
+@@ -69,7 +69,1 @@
+-if (NOT CMAKE_CONAN_BUILD)
+-	install(
+-		DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/_deps/toolbox-src/include/toolbox
+-		DESTINATION ${INSTALL_INCLUDE_DIR}
+-	)
+-endif ()

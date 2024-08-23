@@ -1,0 +1,11 @@
+--- CMakeLists.txt.old    2024-06-06 14:05:11.000000000 -0500
++++ CMakeLists.txt        2024-06-09 13:26:31.038534947 -0500
+@@ -202,5 +202,5 @@
+
+-if (CMAKE_CONAN_BUILD)
+-       find_package(toolbox CONFIG REQUIRED)
+-else ()
++find_package(toolbox CONFIG REQUIRED)
++
++if (NOT toolbox_FOUND)
+        include(FetchContent)
