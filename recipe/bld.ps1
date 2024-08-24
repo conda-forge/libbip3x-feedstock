@@ -7,7 +7,7 @@ $env:PATH = "$env:PREFIX\bin;" + $env:PATH
 
 # There's a TAB in CMakeLists.txt that fails conda patches mechanism
 Write-Output "Applying patch to CMakeLists.txt..."
-Invoke-Expression "patch -p0 --ignore-whitespace ${env:RECIPE_DIR}/patches/xxxx-find-toolbox-package.patch"
+Invoke-Expression "patch -p0 --ignore-whitespace -i ${env:RECIPE_DIR}/patches/xxxx-find-toolbox-package.patch"
 
 # Build and install
 Write-Output "Creating build directory..."
