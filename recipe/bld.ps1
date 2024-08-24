@@ -6,7 +6,7 @@ $test_release_dir = Join-Path $env:SRC_DIR "test-release"
 $env:PATH = "$env:PREFIX\bin;" + $env:PATH
 
 # There's a TAB in CMakeLists.txt that fails conda patches mechanism
-Invoke-Expression "patch -p0 --ignore-whitespace ${env:RECIPE_DIR}/patches/xxxx-cmake-protocol-lib.patch"
+Invoke-Expression "patch -p0 --ignore-whitespace ${env:RECIPE_DIR}/patches/xxxx-find-toolbox-package.patch"
 
 # Build and install
 New-Item -Path $build_dir -ItemType Directory -Force
